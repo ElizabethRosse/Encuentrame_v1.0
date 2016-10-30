@@ -6,12 +6,13 @@
 package com.tecnosoft.encuentrame.service;
 
 import com.tecnosoft.encuentrame.entity.Objeto;
+import com.tecnosoft.encuentrame.repository.IObjetoRepository;
 import java.util.List;
 
-/**
- *
- * @author Dago
- */
-public interface ObjetoService {
-    List<Objeto> findAll();
+
+public interface IObjetoService  {
+    Objeto saveObj(Objeto obj);
+    Objeto getObjById(Integer id);
+    void deletObjeto(Integer id);
+    List<Objeto> findAllObj();
 }

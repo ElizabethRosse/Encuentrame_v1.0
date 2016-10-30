@@ -7,13 +7,19 @@ package com.tecnosoft.encuentrame.repository;
 
 import com.tecnosoft.encuentrame.entity.Objeto;
 import java.io.Serializable;
+import java.util.List;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 
 
 /**
  *
- * @author Dago
+ * @author RoyCM
  */
-public interface ObjetoRepository extends PagingAndSortingRepository<Objeto, Integer>{    
+public interface IObjetoRepository extends PagingAndSortingRepository<Objeto, Integer>{
+    
+   /**
+    * Aqui implementan metodos propios de busqueda
+    */
+     
 }
