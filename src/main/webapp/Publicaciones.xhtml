@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <h:head>
+        <title>TODO supply a title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <body>
+        
+        <!--Contenedor de mis publicaciones-->
+        <div id="misPublicaciones">
+            <!--Grid Data-->
+            <p:panel id="contPrincipal" style="min-height: 660px; text-align: center">
+                <h:form id="form">
+                    <p:dataGrid var="car" value="#{dataGridView.cars}" columns="2" 
+                                rows="12" paginator="true" id="cars"
+                                paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                style="min-height: 800px">
+                        <p:panel header="#{car.id}" style="text-align:center">
+                            <h:panelGrid columns="2" style="width:100%">
+                                <p:graphicImage name="demo/images/car/#{car.brand}.gif"/> 
+                                <h:outputText value="#{car.year}" />
+                                <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                    <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
+                                </p:commandLink>
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:dataGrid>
+                    <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                        <p:outputPanel id="carDetail" style="text-align:center;">
+                            <p:panelGrid  columns="1" rendered="#{not empty dataGridView.selectedCar}" columnClasses="label,value">
+                                <f:facet name="header">
+                                    <p:graphicImage name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif"/> 
+                                </f:facet>
+
+                                <h:outputText value="Id:" />
+                                <h:outputText value="#{dataGridView.selectedCar.id}" />
+
+                                <h:outputText value="Year" />
+                                <h:outputText value="#{dataGridView.selectedCar.year}" />
+
+                                <h:outputText value="Color:" />
+                                <h:outputText value="#{dataGridView.selectedCar.color}" style="color:#{dataGridView.selectedCar.color}"/>
+
+                                <h:outputText value="Price" />
+                                <h:outputText value="$#{dataGridView.selectedCar.price}" />
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </p:dialog>
+                </h:form>
+            </p:panel>
+            <p:commandButton value="Nueva publicación" id="btnNuevaPublicacion" onclick="cargaNuevaPublicacion()"/>
+        </div>
+        
+        <!--Contenedor de nueva publicaciones-->
+        <div id="nuevaPublicacion">
+            <h:form>
+                <p:panel header="Validate">
+                    <p:messages autoUpdate="true"/>
+
+                    <h:panelGrid id="grid" columns="4" cellpadding="5">
+                        <h:outputLabel for="name" value="Nombre:" style="font-weight:bold"/>                    
+                        <p:inputText id="name" value="#{validationView.text}" required="true" label="Name"/>
+                        <p:message for="name" />
+                        <h:outputText value="#{validationView.text}" />
+
+                        <h:outputLabel for="regex" value="Lugar:" style="font-weight:bold"/>                    
+                        <p:inputText id="regex" value="#{validationView.regexText}" validatorMessage="Value does not match pattern.">
+                        </p:inputText>
+                        <p:message for="regex" />
+                        <h:outputText value="#{validationView.regexText}" />
+
+                        <h:outputLabel for="date" value="Fecha:" style="font-weight:bold"/>                 
+                        <p:inputText id="date" value="#{validationView.date}" label="Date">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </p:inputText>
+                        <p:message for="date" />
+                        <h:outputText value="#{validationView.date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+
+                        <h:outputLabel for="desc" value="Description" style="font-weight:bold"/>
+                        <p:inputTextarea id="desc" value="#{validationView.description}" required="true" label="Description">
+                            <f:validateLength minimum="3" maximum="10" /> 
+                        </p:inputTextarea>
+                        <p:message for="desc" />
+                        <h:outputText value="#{validationView.description}" />
+                    </h:panelGrid>
+
+                    <p:commandButton value="Publicar" update="grid" icon="ui-icon-check" validateClient="true" 
+                                     style="margin-right:10px" onclick="cargaMisPublicaciones()"/>
+                    <p:commandButton value="Cancelar" update="grid" icon="ui-icon-check"
+                                     onclick="cargaMisPublicaciones()"/>
+                </p:panel>
+            </h:form>
+        </div>
+    </body>
+</html>

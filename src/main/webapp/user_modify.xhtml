@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+        
+<h:head>
+
+</h:head> 
+        
+<h:body>    
+    
+<h:form>
+    
+    <p:growl id="growl" sticky="true" showDetail="true"/>
+ 
+    <h1>Perfil de Usuario</h1>
+    <p:tabView>
+        <p:tab title="Datos de Usuario">
+            <h:panelGrid columns="2" columnClasses="label, value">
+                <h:outputText value="Nombre: " style="color:black;"/>
+                <h:outputText value="#{userModify.user.nombre}" styleClass="outputLabel"/>
+
+                <h:outputText value="Apellido paterno: " style="color:black;"/>
+                <h:outputText value="#{userModify.user.ap_paterno}" styleClass="outputLabel"/>
+
+                <h:outputText value="Apellino materno:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.ap_materno}" styleClass="outputLabel"/>
+
+                <h:outputText value="Fecha Nacimiento:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.fecha_nacimiento}" styleClass="outputLabel"/>
+
+                <h:outputText value="Genero:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.genero}" styleClass="outputLabel"/>
+
+                <h:outputText value="Escuela:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.escuela}" styleClass="outputLabel"/>
+
+                <h:outputText value="Numero Cuenta:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.username}" styleClass="outputLabel"/>
+
+                <h:outputText value="Email:" style="color:black;"/>
+                <h:outputText value="#{userModify.user.email}" styleClass="outputLabel"/>                               
+
+
+            </h:panelGrid> 
+        </p:tab>
+        <p:tab title="Modificar Datos">
+            <h:form>
+                <h:panelGrid id="grid" cellpadding="5" columns="2" style="margin-bottom:10px">
+                    <f:facet name="header">
+                        <p:messages id="msgs" />
+                    </f:facet>
+
+                    <h:outputText value="Email: *" style="color:black;" />
+                    <p:inputText value="#{userModify.user.email}" required="true" label="Email"/>
+
+                    <h:outputText value="Contraseña: *" style="color:black;" />
+                    <p:password id="password1" value="#{userModify.user.password}" match="password2" label="Contraseña" required="true" />
+
+                    <h:outputText value="Repetir contraseña: *" style="color:black;"/>
+                    <p:password id="password2" value="#{userModify.user.passwordConfirm}" label="Repetir Contraseña" required="true" /> 
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="6" cellpadding="5">
+                    <p:commandButton value="Guardar" process="@all" update="grid" actionListener="#{userModify.save}" />
+                </h:panelGrid>
+            </h:form>
+        </p:tab>
+        
+    </p:tabView>
+ 
+
+
+</h:form>
+
+</h:body>
+</html>

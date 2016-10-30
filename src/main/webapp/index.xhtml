@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <h:head>
+        <title>!Encuentrame¡</title>
+        <meta charset="utf-8"></meta>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <meta name="description" content=""></meta>
+        <meta name="author" content=""></meta>
+        <link href="resources/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="resources/css/sb-admin.css" rel="stylesheet"/>
+        <link href="resources/css/plugins/morris.css" rel="stylesheet"/>
+        <link href="resources/css/myStyle.css" rel="stylesheet"/>
+        <link href="resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    </h:head>    
+
+    <h:body>
+        <div id="wrapper">
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- BARRA SUPERIOR  -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" onclick="cargaPublicacion()" style="color:white">
+                        ¡Encuentrame!
+                    </a>
+
+                </div>
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-right top-nav">
+
+
+                </ul>
+                <!-- Menu izquierdo login -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse" id="menuIzqLogin">
+                    <ul class="nav navbar-nav side-nav" style="width:300px">
+                        <!--Login-->
+                        <h:form>
+                            <h:panelGrid id="grid" cellpadding="5" columns="2" style="margin-bottom:10px">
+                                <f:facet name="header">
+                                    <p:messages id="msgs" />
+                                </f:facet>
+
+                                <p:outputLabel for="firstname" value="Usuario:" style="color:white;
+                                                                                       font-size: 13px"/>
+                                <p:inputText id="firstname" value="#{userView.firstname}">
+                                    <f:validateLength minimum="2" />
+                                </p:inputText>
+
+                                <p:outputLabel for="surname" value="Contraseña:" style="color:white;
+                                                                                        font-size: 13px " />
+                                <p:password id="surname" value="#{userView.lastname}" required="true" requiredMessage="Surname is required.">
+                                    <f:validateLength minimum="8"/>
+                                </p:password>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="6" cellpadding="5">
+                                <p:commandButton value="Iniciar Sesión" id="btnAll" process="@all" update="grid" onclick="cargaMenu()" />
+                            </h:panelGrid>
+                        </h:form>
+                        <a onclick="cargaRegistro()">  Registrarse</a>
+                        <br/>
+                        <a onclick="modificarRegistro()">  Modificar</a>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+            
+            <!--Contenedor principal-->
+            <div class="container-fluid" id="contPrincipal" style="width:94%;
+                 margin-right:0px;
+                 background-color: white">
+                <!--Filtros-->
+                <div id="buscadorPublic">
+                    <h:form >      
+                        <p:panel id="panel" header="Publicaciones" style="margin-bottom:10px;">
+                            <p:messages id="messages" />
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="txt1" value="Text 1: *" />
+                                <p:inputText id="txt1" value="#{searchView.text1}" required="true" label="Text 1">
+                                    <f:validateLength minimum="2" />
+                                </p:inputText>
+                                <p:message for="txt1" />
+                                <h:outputText value="#{searchView.text1}" />
+
+                                <h:outputLabel for="txt2" value="Text 2: *" />
+                                <h:selectOneMenu id="txt2" value="#{searchView.text2}" required="true" label="Text 2">
+                                    <f:selectItem itemLabel="Selecciona una opción" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Ropa" itemValue="1" />
+                                    <f:selectItem itemLabel="Articulos escolares" itemValue="2" />
+                                    <f:selectItem itemLabel="Otros" itemValue="3" />
+                                </h:selectOneMenu>
+                                <p:message for="@previous" />
+                                <h:outputText value="#{searchView.text2}" />
+                            </h:panelGrid>
+                        </p:panel>
+
+                        <h:panelGrid columns="2">
+                            <p:commandButton process="@parent:@parent" update="@form" value="Buscar"/>
+                        </h:panelGrid>
+                    </h:form>
+                    <!--Grid Data-->
+                    <p:panel id="contPrincipal" style="min-height: 660px; text-align: center">
+                        <h:form id="form">
+                            <p:dataGrid var="car" value="#{dataGridView.cars}" columns="2" 
+                                        rows="12" paginator="true" id="cars"
+                                        paginatorTemplate="  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                        style="min-height: 800px">
+                                <p:panel header="#{car.id}" style="text-align:center">
+                                    <h:panelGrid columns="2" style="width:100%">
+                                        <p:graphicImage name="demo/images/car/#{car.brand}.gif"/> 
+                                        <h:outputText value="#{car.year}" />
+                                        <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
+                                            <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                            <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
+                                        </p:commandLink>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:dataGrid>
+                            <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                                <p:outputPanel id="carDetail" style="text-align:center;">
+                                    <p:panelGrid  columns="1" rendered="#{not empty dataGridView.selectedCar}" columnClasses="label,value">
+                                        <f:facet name="header">
+                                            <p:graphicImage name="demo/images/car/#{dataGridView.selectedCar.brand}-big.gif"/> 
+                                        </f:facet>
+
+                                        <h:outputText value="Id:" />
+                                        <h:outputText value="#{dataGridView.selectedCar.id}" />
+
+                                        <h:outputText value="Year" />
+                                        <h:outputText value="#{dataGridView.selectedCar.year}" />
+
+                                        <h:outputText value="Color:" />
+                                        <h:outputText value="#{dataGridView.selectedCar.color}" style="color:#{dataGridView.selectedCar.color}"/>
+
+                                        <h:outputText value="Price" />
+                                        <h:outputText value="$#{dataGridView.selectedCar.price}" />
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:dialog>
+                        </h:form>
+                    </p:panel>
+                </div>
+            </div>
+
+        </div>
+        <script src="resources/js/jquery.js"></script>
+        <script src="resources/js/principal.js"></script>
+        <script src="resources/js/bootstrap.min.js"></script>
+        <script src="resources/js/plugins/morris/raphael.min.js"></script>
+        <script src="resources/js/plugins/morris/morris.min.js"></script>
+        <script src="resources/js/plugins/morris/morris-data.js"></script>
+    </h:body>
+</html>

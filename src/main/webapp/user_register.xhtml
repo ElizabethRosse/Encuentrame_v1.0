@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+<h:body>
+        
+        <h1>Registro de usuario</h1>
+        
+        
+        <h:form>
+
+            <p:growl id="growl" sticky="true" showDetail="true"/>
+
+            <p:wizard flowListener="#{userWizard.onFlowProcess}">
+                
+                <p:tab id="personal" title="Personal">
+                    <p:panel header="Datos personales">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            
+                            <h:outputText value="Nombre (s): *" style="color:black;"/>
+                            <p:inputText value="#{userWizard.user.nombre}" required="true" label="Firstname"/>
+
+                            <h:outputText value="Apellido paterno: *" style="color:black;"/>
+                            <p:inputText value="#{userWizard.user.ap_paterno}" required="true" label="Lastname"/>
+
+                            <h:outputText value="Apellido materno: " style="color:black;"/>
+                            <p:inputText value="#{userWizard.user.ap_materno}" />
+
+                                
+                            <h:outputText value="Fecha Nacimiento: " style="color:black;"/>
+                            <p:calendar value="#{userWizard.user.fecha_nacimiento}" navigator="true" showOn="button" />
+                         
+                            
+                            <h:outputText value="Genero: " style="color:black;"/>
+                            <p:selectOneMenu value="#{userWizard.user.genero}">
+                                <f:selectItem itemLabel="Selecciona uno" itemValue="" />
+                                <f:selectItem itemLabel="Masculino" itemValue="M" />
+                                <f:selectItem itemLabel="Femenino" itemValue="F" />
+                            </p:selectOneMenu>                            
+                            
+                            <h:outputText value="Escuela " style="color:black;" />
+                            <p:inputText value="#{userWizard.user.escuela}" label="Escuela"/>
+                            
+                        </h:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab id="acceso" title="Acceso">
+                    <p:panel header="Informacion de Acceso al sistema">
+                        <p:messages />
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                            
+                            <h:outputText value="Numero Cuenta: *" style="color:black;" />
+                            <p:inputText value="#{userWizard.user.username}" required="true" label="Numero Cuenta"/>
+                            
+                            <h:outputText value="Email: *" style="color:black;" />
+                            <p:inputText value="#{userWizard.user.email}" required="true" label="Email"/>
+
+                            <h:outputText value="Contraseña: *" style="color:black;" />
+                            <p:password id="password1" value="#{userWizard.user.password}" match="password2" label="Contraseña" required="true" />
+
+                            <h:outputText value="Repetir contraseña: *" style="color:black;"/>
+                            <p:password id="password2" value="#{userWizard.user.passwordConfirm}" label="Repetir Contraseña" required="true" /> 
+                            
+                        </h:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab id="confirm" title="Confirmacion">
+                    <p:panel header="Confirmar Registro">
+                        <h:panelGrid columns="2" columnClasses="label, value">
+                                <h:outputText value="Nombre: " style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.nombre}" styleClass="outputLabel"/>
+
+                                <h:outputText value="Apellido paterno: " style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.ap_paterno}" styleClass="outputLabel"/>
+
+                                <h:outputText value="Apellino materno:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.ap_materno}" styleClass="outputLabel"/>
+                                
+                                <h:outputText value="Fecha Nacimiento:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.fecha_nacimiento}" styleClass="outputLabel"/>
+
+                                <h:outputText value="Genero:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.genero}" styleClass="outputLabel"/>
+                                
+                                <h:outputText value="Escuela:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.escuela}" styleClass="outputLabel"/>
+                                
+                                <h:outputText value="Numero Cuenta:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.username}" styleClass="outputLabel"/>
+                                
+                                <h:outputText value="Email:" style="color:black;"/>
+                                <h:outputText value="#{userWizard.user.email}" styleClass="outputLabel"/>                               
+                                
+                            
+                        </h:panelGrid>
+                        
+                        <p:commandButton value="Registrase" actionListener="#{userWizard.save}" update="growl" process="@this"/>
+                    </p:panel>
+                </p:tab>
+                
+            </p:wizard>
+
+        </h:form>
+
+
+<script type="text/javascript">
+    function handleLoginRequest(xhr, status, args) {
+        if(args.validationFailed || !args.loggedIn) {
+            PF('dlg').jq.effect("shake", {times:5}, 100);
+        }
+        else {
+            PF('dlg').hide();
+            $('#loginLink').fadeOut();
+            javascript:window.location.href='index.xhtml'
+        }
+    }
+</script>    
+</h:body>
+</html>
